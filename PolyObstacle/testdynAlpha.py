@@ -5,7 +5,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 import matplotlib.animation as animation
 from matplotlib import cm
-
+from math import hypot
 from Polygon import *
 import pymp
 
@@ -27,7 +27,7 @@ poly = Polygon( [( 476,386),\
                   (508,672)], alpha=0.005, beta=1)
 for i in range(X.shape[0]):
     for k in range(X.shape[1]):
-        Z[i,k] = poly.get_force((X[i,k],Y[i,k]))
+        Z[i,k] = hypot(*poly.get_force((X[i,k],Y[i,k])))
 
 
 
