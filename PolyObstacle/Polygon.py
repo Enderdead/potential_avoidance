@@ -40,6 +40,8 @@ class Polygon:
         return exp(-distance_min*self.alpha)*self.beta
 
 
+
+
 if __name__ == '__main__':
     poly = Polygon( [( 1000,1000), (1600,1000),(1600,1100), (1000,1100)], alpha=0.01, beta=1)
     print(poly.get_force((1300,1000)))
