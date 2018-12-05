@@ -9,10 +9,13 @@ class Map:
 
     def get_force(self, position):
         x , y = position
-        wall_vect = ((0, y), (x, 0), (self.width,y), (x,self.length))
-        result = 0
-        for (x_wall, y_wall) in wall_vect:
-            result += exp(-hypot(x_wall-x, y_wall-y)*self.alpha)*self.beta
+        wall_vects = ((0, y), (x, 0), (self.width,y), (x,self.length))
+        norm_vects = ((1, 0), (0, 1), (-1, 0), (0, -1))
+        result = [0,0]
+        for (wall_vect, norm_vect) in zip(wall_vects, norm_vects):
+            (x_wall, y_wall) = wall_vect
+            result[0] +=  exp(-hypot(x_wall-x, y_wall-y)*self.alpha)*self.beta*norm_vect[0]
+            result[1] +=  exp(-hypot(x_wall-x, y_wall-y)*self.alpha)*self.beta*norm_vect[1]
         
         return result
 

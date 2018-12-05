@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D 
 import matplotlib.animation as animation
 from Map import *
+from math import hypot
 import pymp
 betas = [5,2,1,0.5,0.1,0.05,0.01,0.005,0.001,0.0005,0.0001]
 
@@ -20,7 +21,7 @@ with pymp.Parallel(4) as p:
     for beta in range(len(betas)):
         for i in range(X.shape[0]):
             for k in range(X.shape[1]):
-                Zs[beta][i,k] = maps[beta].get_force((X[i,k],Y[i,k]))
+                Zs[beta][i,k] = hypot(*maps[beta].get_force((X[i,k],Y[i,k])))
 
 
 def update_plot(frame_number, zarray, plot):
