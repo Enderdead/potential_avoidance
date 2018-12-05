@@ -1,7 +1,7 @@
 from math import exp, hypot
 
 class Map:
-    def __init__(self, length, width, alpha=1, beta=0):
+    def __init__(self, length, width, alpha=0.001, beta=0):
         self.length = length
         self.width  = width
         self.alpha = alpha
