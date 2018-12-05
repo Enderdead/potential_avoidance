@@ -1,7 +1,7 @@
 from math import exp, hypot, isclose, atan2, cos, sin, pi
 
 class Polygon:
-    def __init__(self, poly, alpha=0.0001, beta=0.5):
+    def __init__(self, poly, alpha=0.001, beta=1):
         self.poly = poly
         self.alpha = alpha
         self.beta = beta
@@ -9,7 +9,6 @@ class Polygon:
         for x,y in poly:
             self.center[0] += x/len(poly)
             self.center[1] += y/len(poly)
-        print(self.center)
         self.poly = [self.poly[-1]] + self.poly + [self.poly[0]]
         
 
