@@ -1,10 +1,10 @@
 from geogebra import * 
-from PolyObstacle.Polygon import * 
-from MapObstacle.Map import * 
-from PointObstacle.Point import * 
+from ObstacleField.PolyObstacle.Polygon import * 
+from ObstacleField.MapObstacle.Map import * 
+from ObstacleField.PointObstacle.Point import * 
 
-nb_it = 200
-delta = 10
+max_it = 500
+delta = 1 #TOUT LE TEMPS
 
 # Extract geogebra data
 geo = Geogebra("./main.ggb")
@@ -19,17 +19,17 @@ robot_vel = [0,0]
 # Create obj
 objs = list()
 objs.append(Map(*maps))
-objs.append(Point(*target,alpha=0.0001,beta=-1.5))
-objs.append(Polygon(poly,alpha=0.01, beta=10))
+objs.append(Point(*target,alpha=0.0001,beta=-15))
+objs.append(Polygon(poly,alpha=0.01, beta=100))
 
 path = list()
-
-for _ in range(nb_it):
+it = 0 
+while(hypot(robot_pos[0]-target[0], robot_pos[1]- target[1])>10 and it<max_it):
     robot_pos[0], robot_pos[1] =  robot_pos[0]+robot_vel[0]*delta, robot_pos[1]  + robot_vel[1]*delta
     robot_vel = [0, 0]
     for obj in objs:
-        robot_vel[0], robot_vel[1] = (robot_vel[0]+ obj.get_force(robot_pos)[0]*delta),(robot_vel[1]+ obj.get_force(robot_pos)[1]*delta)
-
+        robot_vel[0], robot_vel[1] = (robot_vel[0]+ obj.get_force(robot_pos)[0]),(robot_vel[1]+ obj.get_force(robot_pos)[1])
+    it += 1
     path.append((robot_pos[0],robot_pos[1]))
 
 
@@ -38,5 +38,5 @@ for element in path:
     result +=str(tuple(element))+","
 
 result = result[:-1]+ ")"
-
 print(result)
+print("nb it : ",it)
