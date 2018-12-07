@@ -2,7 +2,7 @@ from geogebra import *
 from ObstacleField.PolyObstacle.Polygon import * 
 from ObstacleField.MapObstacle.Map import * 
 from ObstacleField.PointObstacle.Point import * 
-
+from ObstacleField.funct import *
 max_it = 500
 delta = 1 #TOUT LE TEMPS
 
@@ -18,9 +18,10 @@ robot_vel = [0,0]
 
 # Create obj
 objs = list()
-objs.append(Map(*maps))
-objs.append(Point(*target,alpha=0.0001,beta=-15))
-objs.append(Polygon(poly,alpha=0.01, beta=100))
+
+objs.append(Map(*maps, funct_list["exp"](alpha=0.001, beta=1)))
+objs.append(Point(*target,funct_list["exp"](alpha=0.0001,beta=-15)))
+objs.append(Polygon(poly,funct_list["exp"](alpha=0.01, beta=100)))
 
 path = list()
 it = 0 

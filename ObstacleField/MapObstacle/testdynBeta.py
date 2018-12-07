@@ -5,6 +5,14 @@ import matplotlib.animation as animation
 from Map import *
 from math import hypot
 import pymp
+import sys
+from inspect import getsourcefile
+import os.path as path, sys
+current_dir = path.dirname(path.abspath(getsourcefile(lambda:0)))
+sys.path.insert(0, current_dir[:current_dir.rfind(path.sep)])
+from funct import *
+
+
 betas = [5,2,1,0.5,0.1,0.05,0.01,0.005,0.001,0.0005,0.0001]
 
 
@@ -16,7 +24,7 @@ X = np.arange(0, 2000, 10)
 Y = np.arange(0, 3000, 10)
 X, Y = np.meshgrid(X, Y)
 Zs = [np.zeros_like(X,dtype=np.float) for i in range(len(betas))]
-maps = [ Map(3000,2000,0.01,beta) for beta in betas]
+maps = [ Map(3000,2000,funct_list["exp"]( alpha=0.01, beta=beta)) for beta in betas]
 with pymp.Parallel(4) as p:
     for beta in range(len(betas)):
         for i in range(X.shape[0]):

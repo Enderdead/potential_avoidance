@@ -16,7 +16,7 @@ class Funct:
             object.__setattr__(self, arg, kwargs.get(arg))
             
     def __call__(self, vect, distance):
-        if distance<0:
+        if distance<=0:
             return self.saturate(vect)
         return [vect[0]*self.apply(distance), vect[1]*self.apply(distance)]
 
@@ -69,7 +69,7 @@ class Lin(Funct):
 funct_list = {"lin" : Lin, "exp" : Exp, "log": Log}
 
 if __name__ == "__main__":
-    a = Log(alpha=1, beta=2)
+    a = Exp(alpha=0.2, beta=-2)
     t = np.arange(-1.0, 20.0, 0.01)
     s = np.zeros_like(t, dtype=np.float32)
     for i in range(t.shape[0]):
@@ -79,4 +79,4 @@ if __name__ == "__main__":
     ax.plot(t, s)
 
     ax.grid()
-    #plt.show()
+    plt.show()

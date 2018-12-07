@@ -5,19 +5,26 @@ import matplotlib.animation as animation
 from Polygon import *
 from math import hypot
 import pymp
-
+import sys
+from inspect import getsourcefile
+import os.path as path, sys
+current_dir = path.dirname(path.abspath(getsourcefile(lambda:0)))
+sys.path.insert(0, current_dir[:current_dir.rfind(path.sep)])
+from funct import *
 # Make data.
 X = np.arange(100, 1900, 100)
 Y = np.arange(100, 2900, 100)
 A, B = np.meshgrid(X, Y)
 U = np.zeros_like(A,dtype=np.float32)
 V = np.zeros_like(A,dtype=np.float32)
+f = funct_list["exp"]( alpha=0.005, beta=1)
+
 poly = Polygon( [( 476,386),\
                  (1125,590),\
                  (1012,970),\
                  (808,1262),\
                  (653,1167),\
-                  (508,672)], alpha=0.005, beta=1)
+                  (508,672)], f)
 
 for i in range(A.shape[0]):
     for k in range(A.shape[1]):
