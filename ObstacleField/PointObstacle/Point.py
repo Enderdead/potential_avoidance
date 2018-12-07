@@ -13,3 +13,7 @@ class Point:
             return [0, 0]
         vect = vect[0]/hypot(*vect),  vect[1]/hypot(*vect)
         return self.funct(vect, hypot(x_ext-self.x, y_ext-self.y))
+
+    def get_scalaire(self, position):
+        x_ext , y_ext = position
+        return self.funct.apply(hypot(x_ext-self.x, y_ext-self.y))
