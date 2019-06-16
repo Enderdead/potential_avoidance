@@ -57,11 +57,11 @@ class Log(Funct):
 class Lin(Funct):
     args = ["a", "b"]
 
-    def __init__(self, kwargs):
+    def __init__(self, **kwargs):
         Funct.__init__(self, Lin.args, kwargs)
     
     def apply(self, scalaire):
-        return max(0, scalaire*-1*self.a + self.b)
+        return scalaire*-1*self.a + self.b
 
     def get_max(self):
         self.b
