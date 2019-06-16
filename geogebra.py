@@ -271,7 +271,6 @@ class Geogebra():
         all_labels = [element.get('label') for element in elements]
         labels = [label for label in all_labels if re.match(pattern, label)]
         labels = sorted(labels)
-        print(labels)
         parse_by_element = ["point", "line", "conic", "angle", "numeric"]
         parse_by_command = ["Segment", "Vector", "Polyline", "Polygon"]
 

@@ -42,14 +42,14 @@ class Exp(Funct):
         return self.beta
 
 class Log(Funct):
-    args = ["alpha", "beta"]
+    args = ["alpha", "beta", "ceta"]
     def __init__(self, **kwargs):
         Funct.__init__(self, Log.args, kwargs)
 
     def apply(self, scalaire):
-        if(-scalaire+self.alpha)<=0:
+        if(-scalaire*self.beta+self.alpha)<=0:
             return 0
-        return max(0,log(-1*scalaire+self.alpha) + self.beta)
+        return max(0,log(-1*scalaire*self.beta+self.alpha)+self.ceta)
 
     def get_max(self):
         return self.apply(0)
@@ -64,12 +64,12 @@ class Lin(Funct):
         return scalaire*-1*self.a + self.b
 
     def get_max(self):
-        self.b
+        return self.b
 
 funct_list = {"lin" : Lin, "exp" : Exp, "log": Log}
 
 if __name__ == "__main__":
-    a = Exp(alpha=0.2, beta=-2)
+    a = Log(alpha=7, beta=0.3, ceta=2)
     t = np.arange(-1.0, 20.0, 0.01)
     s = np.zeros_like(t, dtype=np.float32)
     for i in range(t.shape[0]):
