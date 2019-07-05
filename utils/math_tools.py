@@ -1,4 +1,4 @@
-from math import atan2, pi
+from math import atan2, pi, hypot, isclose, cos, sin, inf
 
 
 
@@ -72,41 +72,57 @@ def is_convex_polygon(polygon):
         return False  # any exception means not a proper convex polygon
 
 
-def dist_from_polygon(pt, polygon):
-    min_i = -1
-    distance_min = 60000
-    for i in range(1,len(self.poly)-1):
-        x, y = self.poly[i]
-        distance = hypot(x-x_ext, y-y_ext)
-        if distance<distance_min:
-            distance_min = distance
-            min_i = i
+def get_poly_center(polygon):
+    center = [0,0]
+    for x,y in polygon:
+        center[0] += x/len(poly)
+        center[1] += y/len(poly)
+    return center
 
-    distances_mur = [0,0]
+def dist_from_polygon(pt, polygon, poly_center=None):
+
+
+    if poly_center is None:
+        poly_center = get_poly_center(polygon)
+
+    polygon = [polygon[-1]] + polygon + [polygon[0]]
+    # Find the closest vertex from pt (argmin).
+    arg_min = -1
+    min_val = inf
+    for i in range(1,len(polygon)-1):
+        x, y = polygon[i]
+        dist = hypot(x-pt[0], y-pt[1])
+        if dist<min_val:
+            min_val = dist
+            arg_min = i
+
+    dist_from_edges = [0,0]
     for k in range(2):
-        x1, y1 = self.poly[min_i-1+k]
-        x2, y2 = self.poly[min_i+k]
+        x1, y1 = polygon[arg_min-1+k]
+        x2, y2 = polygon[arg_min+k]
         cote = (x2-x1 , y2-y1)
-        robot = (x_ext-x1, y_ext-y1)
+        robot = (pt[0]-x1, pt[1]-y1)
         scalaire = robot[0]*cote[0] + robot[1]*cote[1]
         projection = scalaire/hypot(*cote)
-        distance_du_mur = (robot[0]*cote[1] - cote[0]*robot[1])/hypot(*cote)
-        distances_mur[k] = distance_du_mur
-        if(0<=projection<=hypot(*cote) and distance_du_mur>=0):
+        dist_from_edge = (robot[0]*cote[1] - cote[0]*robot[1])/hypot(*cote)
+        dist_from_edges[k] = dist_from_edge
+        if(0<=projection<=hypot(*cote) and dist_from_edge>=0):
+            # If we find the closest edge 
             vect = [sin(atan2(cote[1], cote[0])), -1*cos(atan2(cote[1], cote[0]))]
-            if isclose(0,distance_du_mur, abs_tol=0.1):
-                return self.funct.get_max()
-            return self.funct.apply(distance_du_mur)
+            if isclose(0,dist_from_edge, abs_tol=0.1):
+                # If pt is on polygon edge
+                return -1, vect
+            return dist_from_edge, vect
     
-    if distances_mur[0]*distances_mur[1]>0 and distances_mur[0]<0:
-        # if point is on polygon
-        vect = [ (x_ext - self.center[0]),  (y_ext - self.center[1])]
-        #TODO 
-        #vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)] 
-        return self.funct.get_max()
-    vect = [ (x_ext - self.poly[min_i][0]),  (y_ext - self.poly[min_i][1])]
-    vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)]
-    return self.funct.apply(distance_min)
+    if dist_from_edges[0]*dist_from_edges[1]>0 and dist_from_edges[0]<0:
+        # if pt is on polygon
+        vect = [ (pt[0] - poly_center[0]),  (pt[1] - poly_center[1])]
+        vect_norm = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)] 
+        return -1, vect_norm
+
+    vect = [ (pt[0] - polygon[arg_min][0]),  (pt[1] - polygon[arg_min][1])]
+    vect_norm = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)]
+    return min_val, vect_norm
 
 
 if __name__ == "__main__":
