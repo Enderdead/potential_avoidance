@@ -1,13 +1,13 @@
 from math import exp, hypot
+from field.Field import Obstacle
 
-class Map:
+class Map(Obstacle):
     def __init__(self, width, length, funct):
         self.length = length
         self.width  = width
         self.funct = funct
 
-    def get_force(self, position):
-        x , y = position
+    def get_force(self, x, y):
         wall_vects = ((0, y), (x, 0), (self.width,y), (x,self.length))
         norm_vects = ((1, 0), (0, 1), (-1, 0), (0, -1))
         result = [0,0]
@@ -17,8 +17,7 @@ class Map:
             result[1] +=  self.funct(norm_vect, hypot(x_wall-x, y_wall-y))[1]
         return result
 
-    def get_scalaire(self, position):
-        x , y = position
+    def get_potential(self, x, y):
         wall_vects = ((0, y), (x, 0), (self.width,y), (x,self.length))
         norm_vects = ((1, 0), (0, 1), (-1, 0), (0, -1))
         result = 0

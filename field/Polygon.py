@@ -1,6 +1,7 @@
 from math import exp, hypot, isclose, atan2, cos, sin, pi
-
-class Polygon:
+from field.Field import Obstacle
+from field.funct import Exp
+class Polygon(Obstacle):
     def __init__(self, poly, funct):
         self.poly = poly
         self.funct = funct
@@ -10,8 +11,7 @@ class Polygon:
             self.center[1] += y/len(poly)
         self.poly = [self.poly[-1]] + self.poly + [self.poly[0]]
         
-    def get_scalaire(self, position):
-        x_ext , y_ext = position
+    def get_potential(self, x_ext, y_ext):
         min_i = -1
         distance_min = 60000
         for i in range(1,len(self.poly)-1):
@@ -40,15 +40,15 @@ class Polygon:
         if distances_mur[0]*distances_mur[1]>0 and distances_mur[0]<0:
             # if point is on polygon
             vect = [ (x_ext - self.center[0]),  (y_ext - self.center[1])]
-            vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)] 
+            #TODO 
+            #vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)] 
             return self.funct.get_max()
         vect = [ (x_ext - self.poly[min_i][0]),  (y_ext - self.poly[min_i][1])]
         vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)]
         return self.funct.apply(distance_min)
 
 
-    def get_force(self, position):
-        x_ext , y_ext = position
+    def get_force(self, x_ext , y_ext):
         min_i = -1
         distance_min = 60000
         for i in range(1,len(self.poly)-1):
@@ -83,15 +83,30 @@ class Polygon:
         vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)]
         return self.funct(vect, distance_min)
 
-if __name__ == '__main__':
-    import sys
-    from inspect import getsourcefile
-    import os.path as path, sys
-    current_dir = path.dirname(path.abspath(getsourcefile(lambda:0)))
-    sys.path.insert(0, current_dir[:current_dir.rfind(path.sep)])
-    from funct import *
 
-    f = funct_list["exp"]( alpha=0.01, beta=1)
-    poly = Polygon( [( 1000,1000), (1600,1000),(1600,1100), (1000,1100)],f)
-    print(poly.get_force((1300,800)))
 
+
+class LimitObstacle(Obstacle):
+    def __init__(self, width, length, funct=Exp(alpha=0.01, beta=10)):
+        self.length = length
+        self.width  = width
+        self.funct = funct
+
+    def get_force(self, x, y):
+        wall_vects = ((0, y), (x, 0), (self.width,y), (x,self.length))
+        norm_vects = ((1, 0), (0, 1), (-1, 0), (0, -1))
+        result = [0,0]
+        for (wall_vect, norm_vect) in zip(wall_vects, norm_vects):
+            (x_wall, y_wall) = wall_vect
+            result[0] +=  self.funct(norm_vect, hypot(x_wall-x, y_wall-y))[0]
+            result[1] +=  self.funct(norm_vect, hypot(x_wall-x, y_wall-y))[1]
+        return result
+
+    def get_potential(self, x, y):
+        wall_vects = ((0, y), (x, 0), (self.width,y), (x,self.length))
+        norm_vects = ((1, 0), (0, 1), (-1, 0), (0, -1))
+        result = 0
+        for (wall_vect, norm_vect) in zip(wall_vects, norm_vects):
+            (x_wall, y_wall) = wall_vect
+            result  += self.funct.apply(hypot(x_wall-x, y_wall-y))
+        return result

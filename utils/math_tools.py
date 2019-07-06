@@ -1,14 +1,15 @@
-from math import atan2
+from math import atan2, pi
 
 
-# Faire le convexe
-# Faire le clock wise
 
 def is_anti_clock_wise(polygon):
     """Return True if the polygon defined by the sequence of 2D
     points is ordered on anticlockwise.
     """
-    center = sum(map(lambda pt : pt[0], polygon), 0)/len(polygon), sum(map(lambda pt : pt[1], polygon), 0)/len(polygon)
+    try:
+        center = sum(map(lambda pt : pt[0], polygon), 0)/len(polygon), sum(map(lambda pt : pt[1], polygon), 0)/len(polygon)
+    except ZeroDivisionError:
+        raise IndexError("Your polygon is empty !")
     for pt1, pt2 in  zip(polygon, polygon[1:] + [polygon[0],]):
         edge_vec   = (pt2[0]-pt1[0], pt2[1]-pt1[1])
         center_vec = (center[0]-pt1[0], center[1]-pt1[1])
@@ -53,9 +54,9 @@ def is_convex_polygon(polygon):
             # Calculate & check the normalized direction-change angle
             angle = new_direction - old_direction
             if angle <= -pi:
-                angle += TWO_PI  # make it in half-open interval (-Pi, Pi]
+                angle += 2*pi  # make it in half-open interval (-Pi, Pi]
             elif angle > pi:
-                angle -= TWO_PI
+                angle -= 2*pi
             if ndx == 0:  # if first time through loop, initialize orientation
                 if angle == 0.0:
                     return False
@@ -66,13 +67,49 @@ def is_convex_polygon(polygon):
             # Accumulate the direction-change angle
             angle_sum += angle
         # Check that the total number of full turns is plus-or-minus 1
-        return abs(round(angle_sum / TWO_PI)) == 1
+        return abs(round(angle_sum / 2*pi)) == 1
     except (ArithmeticError, TypeError, ValueError):
         return False  # any exception means not a proper convex polygon
 
+
+def dist_from_polygon(pt, polygon):
+    min_i = -1
+    distance_min = 60000
+    for i in range(1,len(self.poly)-1):
+        x, y = self.poly[i]
+        distance = hypot(x-x_ext, y-y_ext)
+        if distance<distance_min:
+            distance_min = distance
+            min_i = i
+
+    distances_mur = [0,0]
+    for k in range(2):
+        x1, y1 = self.poly[min_i-1+k]
+        x2, y2 = self.poly[min_i+k]
+        cote = (x2-x1 , y2-y1)
+        robot = (x_ext-x1, y_ext-y1)
+        scalaire = robot[0]*cote[0] + robot[1]*cote[1]
+        projection = scalaire/hypot(*cote)
+        distance_du_mur = (robot[0]*cote[1] - cote[0]*robot[1])/hypot(*cote)
+        distances_mur[k] = distance_du_mur
+        if(0<=projection<=hypot(*cote) and distance_du_mur>=0):
+            vect = [sin(atan2(cote[1], cote[0])), -1*cos(atan2(cote[1], cote[0]))]
+            if isclose(0,distance_du_mur, abs_tol=0.1):
+                return self.funct.get_max()
+            return self.funct.apply(distance_du_mur)
+    
+    if distances_mur[0]*distances_mur[1]>0 and distances_mur[0]<0:
+        # if point is on polygon
+        vect = [ (x_ext - self.center[0]),  (y_ext - self.center[1])]
+        #TODO 
+        #vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)] 
+        return self.funct.get_max()
+    vect = [ (x_ext - self.poly[min_i][0]),  (y_ext - self.poly[min_i][1])]
+    vect = [vect[0]/hypot(*vect), vect[1]/hypot(*vect)]
+    return self.funct.apply(distance_min)
 
 
 if __name__ == "__main__":
     poly = [(1394.6978243262165, 2030.9257645897196), (1073.2561421503617, 1890.9430965453953), (1010.9620073660711, 1708.8651986190257), (1052.4208758458608, 1523.5196689446702), (1301.3760456300006, 1413.9651165425128), (1500.0, 1500.0), (1736.877679545675, 1636.9004767612514), (1762.8003958501793, 1911.681269588999), (1638.371357588558, 2051.6639376333233)]
     
-    print(is_anti_clock_wise(poly))
+    print(is_anti_clock_wise([]))
