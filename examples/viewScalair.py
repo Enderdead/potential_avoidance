@@ -33,7 +33,7 @@ objs.append(LimitObstacle( 2000,3000  , funct_list["exp"](alpha=0.01, beta=10)))
 objs.append(Point(*target,funct_list["exp"](alpha=0.001,beta=-20)))
 #objs.append(Polygon(poly,funct_list["log"](alpha=50, beta=.2, ceta=10)))
 #objs.append(Polygon(poly, funct_list["lin"](a=20/600, b=10) ))
-objs.append(Polygon(poly,funct_list["exp"](alpha=0.01, beta=10)))
+objs.append(Polygon(poly,funct_list["exp"](alpha=2, beta=10)))
 
 for i in range(X.shape[0]):
     for k in range(X.shape[1]):

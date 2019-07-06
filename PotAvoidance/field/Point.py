@@ -1,5 +1,5 @@
 from math import exp, hypot
-from field.Field import Obstacle
+from .Field import Obstacle
 
 
 class Point(Obstacle):

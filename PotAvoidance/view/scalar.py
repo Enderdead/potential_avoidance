@@ -1,11 +1,10 @@
 import numpy as np 
-from field.Field import Field
+from ..field.Field import Field
 from collections.abc import Iterable
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import numpy as np
-import pymp
 
 def plot_scalar(field, x_lim, y_lim, step=10, path=None):
     if not isinstance(field, Field):

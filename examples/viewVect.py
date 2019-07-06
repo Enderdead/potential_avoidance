@@ -1,8 +1,8 @@
 from geogebra import * 
-from ObstacleField.PolyObstacle.Polygon import * 
-from ObstacleField.MapObstacle.Map import * 
-from ObstacleField.PointObstacle.Point import * 
-from ObstacleField.funct import *
+from field.Polygon import * 
+from field.Map import * 
+from field.Point import * 
+from field.funct import *
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -35,8 +35,8 @@ objs.append(Polygon(poly,funct_list["exp"](alpha=0.01, beta=20)))
 for i in range(X.shape[0]):
     for k in range(X.shape[1]):
         for obj in objs:
-            U[i,k] += obj.get_force([float(X[i,k]), float(Y[i,k])])[0]
-            V[i,k] += obj.get_force([float(X[i,k]), float(Y[i,k])])[1]
+            U[i,k] += obj.get_force(*[float(X[i,k]), float(Y[i,k])])[0]
+            V[i,k] += obj.get_force(*[float(X[i,k]), float(Y[i,k])])[1]
 
 fig, ax = plt.subplots()
 

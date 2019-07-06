@@ -1,7 +1,7 @@
 from math import exp, hypot, isclose, atan2, cos, sin, pi
-from utils.math_tools import *
-from field.Field import Obstacle
-from field.funct import Exp
+from ..utils.math_tools import *
+from .Field import Obstacle
+from .funct import Exp
 
 
 
