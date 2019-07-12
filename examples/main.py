@@ -1,8 +1,8 @@
 from geogebra import * 
-from ObstacleField.PolyObstacle.Polygon import * 
-from ObstacleField.MapObstacle.Map import * 
-from ObstacleField.PointObstacle.Point import * 
-from ObstacleField.funct import *
+from field.Polygon import * 
+from field.MapObstacle.Map import * 
+from field.PointObstacle.Point import * 
+from field.funct import *
 max_it = 500
 delta = 1 #TOUT LE TEMPS
 
@@ -12,6 +12,7 @@ start = geo.get("START")
 target = geo.get("END")[0], geo.get("END")[1]
 poly_temp = geo.getall("^tot_.*$")
 poly = poly_temp[:-2]
+print(poly)
 maps = geo.get("MAP")
 robot_pos = [start[0], start[1]]
 robot_vel = [0,0]
