@@ -1,13 +1,13 @@
 # Potential Avoidance
-This little library implement the potentitial avoidance algorithm using numpy and matplotlib. You can create easly and quickly your own field with many types of object. Computing a path and display it are also availiable on this release. 
+This little library implements the potential avoidance algorithm using numpy and matplotlib. You can create easily and quickly your field with many types of objects. Computing a path and display it are also available on this release. 
 
 An example with complet field displaying on matplotlib.
 <p align="center">
   <img src="https://user-images.githubusercontent.com/22777836/61185241-4ca8b080-a657-11e9-9579-201851272c95.gif">
 </p>
 
-## Quick start
-You need first to create your field and add some obtacles.
+## Quickstart
+You need first to create your field and add some obstacles.
 ```python
 # Create field obj
 field = Field()
@@ -39,7 +39,7 @@ Result :
 ## Field model
 You can find 3 basic object model introduced just bellow.
 ### Dot
-The most basic object, it's only a ponctual source. You can use it as a destination on your field.
+The most basic object, it's only a punctual source. You can use it as a destination in your field.
 
 <table>
         <tr>
@@ -49,7 +49,7 @@ The most basic object, it's only a ponctual source. You can use it as a destinat
 </table>
 
 ### Polygon
-Polygon object, can be used as a obstacle on your field. 
+Polygon object can be used as an obstacle on your field. 
 <table>
         <tr>
             <td><img src="https://user-images.githubusercontent.com/22777836/61579004-79e5da80-aaff-11e9-9b94-58dd0099d2ad.png" width="600px"></td>
@@ -69,7 +69,7 @@ This object can help you to limit your robot's playground.
 
 ## Potentials functions
 
-Three function are availiable on this lib. Logarithm, Linear, and Exponential can be find at package Field.funct .
+Three functions are available on this lib. Logarithm, Linear, and Exponential can be found at package Field.funct .
 You can see them on the following graph.
 <p align="center">
 <img src="https://user-images.githubusercontent.com/22777836/61188191-dc605600-a67b-11e9-8ece-9189ec2d44b3.png" alt="drawing" width="60%" />
@@ -77,7 +77,7 @@ You can see them on the following graph.
 
 
 ## Installation 
-Just use the setup script availiable on the root. You just have to run it like this : 
+Just use the setup script available on the root. You just have to run it like this : 
 ```bash 
 python3 setup.py install --user
 ```
