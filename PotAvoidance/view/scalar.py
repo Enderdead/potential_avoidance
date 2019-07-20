@@ -44,7 +44,7 @@ def plot_scalar(field, x_lim, y_lim, step=10, path=None):
 
         path_z = np.zeros_like(path_x, dtype=np.float32)
         for i in range(path_x.shape[0]):
-            for obj in objs:
+            for obj in field.objects:
                 path_z[i] += obj.get_potential(*[float(path_x[i]), float(path_y[i])])
 
 
