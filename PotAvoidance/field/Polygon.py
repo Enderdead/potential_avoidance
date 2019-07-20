@@ -6,18 +6,18 @@ from .funct import Exp
 
 
 class Polygon(Obstacle):
-    def __init__(self, poly, funct):
+    def __init__(self, poly, funct=Exp(alpha=0.005, beta=10)):
 
-        self.poly = poly
+        self.poly = list(poly) if isinstance(poly, tuple) else poly
         self.funct = funct
         self.center = [0, 0]
         for x,y in poly:
             self.center[0] += x/len(poly)
             self.center[1] += y/len(poly)
-        if not is_convex_polygon(poly):
+        if not is_convex_polygon(self.poly):
             pass # TODO fix
             #raise TypeError("Polygon given isn't convex !")
-        if not is_anti_clock_wise(poly):
+        if not is_anti_clock_wise(self.poly):
             raise TypeError("Polygon isn't defined on anti_clock_wise way !")
 
     def get_potential(self, x_ext, y_ext):
